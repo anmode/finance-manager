@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { login } from "../api";
+import "../styles/Login.css";
 
 const Login = ({ setToken }) => {
   const [email, setEmail] = useState("");
