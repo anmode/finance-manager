@@ -48,7 +48,7 @@ const Dashboard = ({ token }) => {
         </div>
         <div className="dashboard-section">
           <h2>Reports</h2>
-          <div className="report-section">
+          {/* <div className="report-section">
             <h3>Monthly Report</h3>
             <input
               type="number"
@@ -63,7 +63,7 @@ const Dashboard = ({ token }) => {
               onChange={(e) => setYear(e.target.value)}
             />
             <button onClick={handleMonthlyReport}>Get Monthly Report</button>
-          </div>
+          </div> */}
           <div className="report-section">
             <h3>Category Report</h3>
             <input
