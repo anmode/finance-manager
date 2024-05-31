@@ -34,13 +34,13 @@ const getBudgets = (token) => {
   });
 };
 
-const getCategories = (token) => {  
+const getCategories = (token) => {
   return axios.get(`${API_URL}/categories`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
-const deleteCategory = (token, id) => { 
+const deleteCategory = (token, id) => {
   return axios.delete(`${API_URL}/categories/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -52,12 +52,24 @@ const createCategory = (token, category) => {
   });
 };
 
-const getCategoryById = (token, id) => { 
+const getCategoryById = (token, id) => {
   return axios.get(`${API_URL}/categories/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
+const getMonthlyReport = (token, month, year) => {
+  return axios.get(`${API_URL}/reports/monthly`, {
+    params: { month, year },
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+const getCategoryReport = (token, categoryId) => {
+  return axios.get(`${API_URL}/reports/category`, {
+    params: { categoryId },
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
 
 export {
   register,
@@ -70,4 +82,6 @@ export {
   deleteCategory,
   createCategory,
   getCategoryById,
+  getMonthlyReport,
+  getCategoryReport,
 };

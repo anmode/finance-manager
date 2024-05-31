@@ -1,6 +1,6 @@
 // src/components/Transaction.js
 import React, { useState, useEffect } from "react";
-import { createTransaction, getTransactions } from "../api";
+import { createTransaction, getTransactions, getCategories } from "../api";
 import "../styles/Transaction.css";
 
 const Transaction = ({ token }) => {
@@ -8,6 +8,7 @@ const Transaction = ({ token }) => {
   const [type, setType] = useState("INCOME");
   const [categoryId, setCategoryId] = useState("");
   const [transactions, setTransactions] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const handleCreateTransaction = async (e) => {
     e.preventDefault();
@@ -33,8 +34,18 @@ const Transaction = ({ token }) => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const response = await getCategories(token); // Fetch categories
+      setCategories(response.data);
+    } catch (error) {
+      alert("Failed to fetch categories");
+    }
+  };
+
   useEffect(() => {
     fetchTransactions();
+    fetchCategories(); // Fetch categories on component mount
   }, [token]);
 
   return (
@@ -52,13 +63,17 @@ const Transaction = ({ token }) => {
           <option value="INCOME">Income</option>
           <option value="EXPENSE">Expense</option>
         </select>
-        <input
-          type="number"
+        <select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
-          placeholder="Category ID"
           required
-        />
+        >
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
         <button type="submit">Add Transaction</button>
       </form>
       <ul className="transaction-list">
@@ -71,7 +86,7 @@ const Transaction = ({ token }) => {
               {transaction.type}
             </span>
             <span className="transaction-category">
-              {transaction.category.name}
+              {transaction.category?.name || "Deleted"}
             </span>
           </li>
         ))}
