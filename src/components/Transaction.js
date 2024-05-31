@@ -1,3 +1,4 @@
+// src/components/Transaction.js
 import React, { useState, useEffect } from "react";
 import { createTransaction, getTransactions } from "../api";
 import "../styles/Transaction.css";
@@ -37,14 +38,14 @@ const Transaction = ({ token }) => {
   }, [token]);
 
   return (
-    <div>
+    <div className="transaction-container">
       <h2>Transactions</h2>
-      <form onSubmit={handleCreateTransaction}>
+      <form className="transaction-form" onSubmit={handleCreateTransaction}>
         <input
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          placeholder="Amount"
+          placeholder="Amount in Rupee"
           required
         />
         <select value={type} onChange={(e) => setType(e.target.value)}>
@@ -60,11 +61,18 @@ const Transaction = ({ token }) => {
         />
         <button type="submit">Add Transaction</button>
       </form>
-      <ul>
+      <ul className="transaction-list">
         {transactions.map((transaction) => (
-          <li key={transaction.id}>
-            {transaction.amount} - {transaction.type} -{" "}
-            {transaction.category.name}
+          <li key={transaction.id} className="transaction-item">
+            <span className="transaction-amount">₹{transaction.amount}</span>
+            <span
+              className={`transaction-type ${transaction.type.toLowerCase()}`}
+            >
+              {transaction.type}
+            </span>
+            <span className="transaction-category">
+              {transaction.category.name}
+            </span>
           </li>
         ))}
       </ul>

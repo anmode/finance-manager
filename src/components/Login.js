@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { login } from "../api";
 import "../styles/Login.css";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ setToken }) => {
+const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -10,32 +12,41 @@ const Login = ({ setToken }) => {
     e.preventDefault();
     try {
       const response = await login(email, password);
-      setToken(response.data.token);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      console.log(response.data);
       alert("Login successful");
+      navigate("/dashboard");
     } catch (error) {
       alert("Login failed");
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <h2>Login</h2>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleLogin}>
+        <h2 className="login-title">Login</h2>
+        <input
+          type="email"
+          className="login-input"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+        />
+        <input
+          type="password"
+          className="login-input"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          required
+        />
+        <button type="submit" className="login-button">
+          Login
+        </button>
+      </form>
+    </div>
   );
 };
 

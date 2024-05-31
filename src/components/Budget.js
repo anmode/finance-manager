@@ -1,3 +1,4 @@
+// src/components/Budget.js
 import React, { useState, useEffect } from "react";
 import { createBudget, getBudgets } from "../api";
 import "../styles/Budget.css";
@@ -34,39 +35,59 @@ const Budget = ({ token }) => {
 
   useEffect(() => {
     fetchBudgets();
+    console.log("token", token);
   }, [token]);
 
   return (
-    <div>
+    <div className="budget-container">
       <h2>Budgets</h2>
-      <form onSubmit={handleCreateBudget}>
+      <form className="budget-form" onSubmit={handleCreateBudget}>
         <input
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          placeholder="Amount"
+          placeholder="Amount in Rupee"
           required
         />
-        <input
-          type="number"
+        <select
           value={month}
           onChange={(e) => setMonth(e.target.value)}
-          placeholder="Month"
           required
-        />
-        <input
-          type="number"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          placeholder="Year"
-          required
-        />
+        >
+          <option value="">Select Month</option>
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+        <select value={year} onChange={(e) => setYear(e.target.value)} required>
+          <option value="">Select Year</option>
+          {Array.from(
+            new Array(10),
+            (v, i) => new Date().getFullYear() - i
+          ).map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
         <button type="submit">Add Budget</button>
       </form>
-      <ul>
+      <ul className="budget-list">
         {budgets.map((budget) => (
-          <li key={budget.id}>
-            {budget.amount} - {budget.month}/{budget.year}
+          <li key={budget.id} className="budget-item">
+            <span className="budget-amount">₹{budget.amount.toFixed(2)}</span>
+            <span className="budget-date">
+              {budget.month}/{budget.year}
+            </span>
           </li>
         ))}
       </ul>
